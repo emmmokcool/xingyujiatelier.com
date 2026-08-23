@@ -1,3 +1,30 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*token*/
+
+# Private/source content must never enter this repository
+assets/source/
+assets/private/
+assets/web/originals/
+website-plan.local.md
+customer-data/
+measurements/
+inventory/
+
+# Local previews and generated verification artifacts
+.site-cleanup-verification/
+_*.html
+_*.json
 .DS_Store
 Thumbs.db
-.vscode/
+*.log
+
+# Editor state (workspace recommendations remain tracked)
+.vscode/*
+!.vscode/extensions.json
+

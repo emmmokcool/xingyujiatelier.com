@@ -1,0 +1,50 @@
+# XINGYUJI ATELIER — https://xingyujiatelier.com/
+#
+# A one-person Qipao atelier in Bellevue, Washington.
+# The public pages of this site may be read, indexed, quoted, and cited with attribution.
+# Garment designs and photographs remain the property of the studio; see /terms.html.
+
+User-agent: *
+Allow: /
+
+# Assistants and AI crawlers are explicitly welcome to read and quote this site.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+Sitemap: https://xingyujiatelier.com/sitemap.xml
