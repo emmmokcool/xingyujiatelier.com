@@ -1677,16 +1677,16 @@ dialog::backdrop {
      the entry subtracts it to stay exactly one viewport tall. Both rows are
      flexible so the photograph keeps a chosen share rather than absorbing
      every spare pixel: with an `auto` copy row it drifted from 58% on one
-     phone to 70% at 768px. The 1.6 was picked by the owner against live
-     previews and holds the photo at a steady 62% from 360px up. The copy
-     row's `max-content` minimum is what stops the CTA being clipped at
-     320x568, where the eyebrow, wordmark, statement and button need more than
-     the ratio would otherwise give them, and it is why that size drops to 37%
-     instead of overflowing. `auto` is not enough there: it resolves below the
-     copy's real height and the button spills out. */
+     phone to 70% at 768px. The 1.25 was picked by the owner against live
+     previews and holds the photo at 56% from 360px up. The copy row's
+     `max-content` minimum is what stops the CTA being clipped at 320x568,
+     where the eyebrow, wordmark, statement and button need more than the
+     ratio would otherwise give them, and it is why that size settles at 55%
+     rather than overflowing. `auto` is not enough there: it resolves below
+     the copy's real height and the button spills out. */
   .entry {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1.6fr) minmax(max-content, 1fr);
+    grid-template-rows: minmax(0, 1.25fr) minmax(max-content, 1fr);
     min-height: calc(var(--1vh) * 100 - var(--banner-height-actual));
     height: calc(var(--1vh) * 100 - var(--banner-height-actual));
   }
