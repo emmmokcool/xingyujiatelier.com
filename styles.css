@@ -1172,8 +1172,8 @@ dialog::backdrop {
 
 /* The QR sits on an ivory mat and every control stays off it: a close mark on
    the code covered the top-right finder square, which is the part a scanner
-   needs most. The dismiss line sits below the panel on the backdrop, and since
-   app.js also closes on a backdrop click it doubles as the instruction. */
+   needs most. The dismiss sits below the panel on the backdrop; a backdrop
+   click closes too, but the control carries the affordance on its own. */
 .qr-dialog {
   width: fit-content;
   max-width: min(90vw, 24rem);
@@ -1211,17 +1211,33 @@ dialog::backdrop {
   background: white;
 }
 
+/* The dismiss speaks the entry call to action's language: a rule-underlined
+   word in letterspaced serif caps, not a sentence. A min-height would drop the
+   rule 44px under the word, so the touch band is a transparent overlay. */
 .qr-dismiss {
-  min-height: 44px;
-  padding: 0 0.5rem;
+  position: relative;
+  padding: 0.2rem 0;
   border: 0;
+  border-bottom: 1px solid currentColor;
   background: transparent;
   color: rgba(255, 250, 244, 0.72);
   cursor: pointer;
   font-family: var(--serif);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  transition: color 180ms ease;
+}
+
+.qr-dismiss::before {
+  position: absolute;
+  top: 50%;
+  right: -0.9rem;
+  left: -0.9rem;
+  height: 44px;
+  content: "";
+  transform: translateY(-50%);
 }
 
 .toast {
