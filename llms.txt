@@ -29,7 +29,7 @@ The portfolio is a record of work, not a catalog.
 ## Pricing
 
 - Made-to-order Qipao starts at **$650 before applicable tax**. Additional layers, piping, pattern
-  matching (对花), and advanced techniques may increase the price.
+  matching, and advanced techniques may increase the price.
 - Bellevue sales tax of 10.3% is applied to the pre-tax total.
 - Zelle payment receives 3% off, applied to the subtotal before tax. The calculation appears on
   every invoice. Zelle payments are final and non-reversible.

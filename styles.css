@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400&family=Inter:wght@300..600&family=Spectral:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Spectral:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;400&display=swap");
 
 :root {
   --ivory: #fffaf4;
@@ -13,7 +13,6 @@
   --shadow: 0 24px 70px rgba(57, 48, 40, 0.13);
   --serif: Spectral, "Iowan Old Style", "Palatino Linotype", serif;
   --sans: Inter, "Segoe UI", sans-serif;
-  --cjk: "Gowun Batang", Spectral, "Palatino Linotype", serif;
   --wordmark: "Zen Kaku Gothic New", sans-serif;
 
   /* Viewport aliases. Small-viewport units so the mobile browser URL bar
@@ -31,6 +30,9 @@
   /* Reserved height. app.js overwrites this with the header's measured
      height so anchor offsets stay correct if the nav wraps. */
   --header-height-actual: var(--header-height);
+  /* The banner sits in normal flow above the entry screen, so the entry has
+     to subtract it to stay exactly one viewport tall. app.js measures it. */
+  --banner-height-actual: 0px;
 
   /* Spacing ladder. Rescaled wholesale per breakpoint instead of being
      overridden component by component. */
@@ -117,11 +119,15 @@ a {
   top: 1rem;
 }
 
+/* Below 781px this is a quiet strip at the top of the page rather than a black
+   bar: it was the only pure-black element on the site and read as a system
+   notice. Above 781px it becomes a muted caption pinned bottom-right, so the
+   colours here are overridden there. */
 .prototype-banner {
   position: relative;
   z-index: 60;
-  color: #fff;
-  background: var(--ink);
+  color: var(--muted);
+  background: var(--canvas-soft);
   text-align: center;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -166,8 +172,6 @@ a {
   align-items: flex-start;
 }
 
-.entry h1,
-.wordmark,
 h1,
 h2,
 h3 {
@@ -175,6 +179,9 @@ h3 {
   font-weight: 400;
 }
 
+/* Both wordmarks are the same face. The entry headline is a display size, so
+   it takes Light; the header mark is 0.66rem, where Light goes fragile, so it
+   takes Regular. */
 .entry h1 {
   margin: 0;
   font-family: var(--wordmark);
@@ -198,17 +205,24 @@ h3 {
   text-transform: uppercase;
 }
 
+/* One button language at every width: a squared block in letterspaced serif
+   caps. Above 781px this used to be the only place it applied, which left
+   phones on the older pill. */
 .button {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  min-height: 3.1rem;
-  padding: 0.8rem 1.35rem;
+  min-height: 44px;
+  padding: 0.95rem 1.7rem;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: 0;
   cursor: pointer;
-  font-weight: 700;
+  font-family: var(--serif);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
   text-decoration: none;
+  text-transform: uppercase;
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
@@ -233,6 +247,23 @@ textarea:focus-visible {
   box-shadow: 0 12px 30px rgba(111, 98, 84, 0.18);
 }
 
+/* The entry call to action is a rule-underlined word, not a filled block, at
+   every width. It sits on the opening image, where a solid fill reads as a
+   web form rather than a cover. */
+.entry .button {
+  position: relative;
+  min-height: auto;
+  padding: 0.2rem 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
 .site-header {
   position: sticky;
   z-index: 20;
@@ -249,20 +280,37 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  font-family: var(--wordmark);
   font-size: 0.95rem;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-decoration: none;
 }
 
+/* Reserved for the atelier mark. Hidden until there is a logo to place, so
+   the wordmark sits flush with the header inset rather than behind an empty
+   circle. Give this a size and remove display:none to bring it back. */
 .logo-space {
-  width: 2.1rem;
-  height: 2.1rem;
-  border: 1px solid var(--accent-dark);
-  border-radius: 50%;
+  display: none;
 }
 
 .site-nav {
   display: flex;
+}
+
+/* Only ever rendered below 781px, where the header collapses to a single row.
+   The desktop rail shows every link at once and needs no disclosure. */
+.nav-toggle {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent-dark);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .site-nav a {
@@ -309,22 +357,40 @@ textarea:focus-visible {
 
 .filter-group {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
+  flex-wrap: nowrap;
+  gap: 1.35rem;
   margin-bottom: 2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-group::-webkit-scrollbar {
+  display: none;
 }
 
 .filter {
-  padding: 0.65rem 1rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--muted);
   background: transparent;
   cursor: pointer;
+  font-family: var(--serif);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-decoration: none;
 }
 
 .filter.is-active {
-  color: white;
-  background: var(--ink);
+  color: var(--ink);
+  background: transparent;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
 }
 
 .gallery-grid {
@@ -348,8 +414,14 @@ textarea:focus-visible {
   align-items: start;
 }
 
+/* The photograph leads: giving the media track a real minimum stops the meta
+   column from taking the free space first. With a 0 minimum the meta column's
+   own 16rem base won the distribution, leaving the photo narrower than its own
+   caption at every width below about 1280px. */
 .piece-layout-available {
-  grid-template-columns: minmax(0, var(--piece-media-width, min(48vw, 34rem))) minmax(16rem, 26rem);
+  grid-template-columns:
+    minmax(min(100%, 20rem), var(--piece-media-width, min(48vw, 34rem)))
+    minmax(16rem, 26rem);
 }
 
 .piece-media {
@@ -394,6 +466,10 @@ textarea:focus-visible {
   padding-top: 0.4rem;
 }
 
+.piece-kicker {
+  display: contents;
+}
+
 .piece-meta strong {
   font-family: var(--serif);
   font-size: 1.35rem;
@@ -426,32 +502,46 @@ textarea:focus-visible {
 
 .piece-dot-nav {
   position: absolute;
-  bottom: 0.85rem;
+  bottom: 0;
   left: 50%;
   display: inline-flex;
-  gap: 0.38rem;
+  gap: 0;
   align-items: center;
   transform: translateX(-50%);
   color: white;
   pointer-events: auto;
 }
 
+/* The mark stays a 0.48rem dot; the button around it grows to 24x44 so the
+   control clears the minimum target size without changing what is drawn. */
 .piece-image-control {
-  width: 0.48rem;
-  height: 0.48rem;
+  position: relative;
+  width: 1.35rem;
+  height: 2.45rem;
   padding: 0;
-  border: 1px solid currentColor;
-  border-radius: 50%;
+  border: 0;
   color: var(--accent-dark);
   background: transparent;
   cursor: pointer;
+}
+
+.piece-image-control::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  transform: translate(-50%, -50%);
 }
 
 .piece-image-controls .piece-image-control {
   color: white;
 }
 
-.piece-image-control.is-active {
+.piece-image-control.is-active::after {
   background: currentColor;
 }
 
@@ -482,13 +572,16 @@ textarea:focus-visible {
   font-size: 0.86rem;
   font-weight: 400;
   letter-spacing: 0.02em;
+  text-transform: none;
 }
 
+/* Not nowrap: the meta column narrows between 1051px and 1100px, and a single
+   unbreakable sentence there widened the whole document. It still sits on one
+   line wherever the column is wide enough. */
 .piece-fitting-note {
   color: var(--muted);
   font-size: 0.72rem;
   line-height: 1.2;
-  white-space: nowrap;
 }
 
 .piece-technique-list {
@@ -513,6 +606,10 @@ textarea:focus-visible {
   content: "•";
 }
 
+.piece-details > summary {
+  display: none;
+}
+
 .piece-inquiry {
   display: grid;
   gap: 0.55rem;
@@ -527,10 +624,6 @@ textarea:focus-visible {
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-}
-
-.cjk-text {
-  font-family: var(--cjk);
 }
 
 .piece-contact-link::after {
@@ -597,10 +690,6 @@ textarea:focus-visible {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-shadow: 0 1px 4px rgba(35, 29, 29, 0.6);
-}
-
-.piece-photo-id {
-  display: none;
 }
 
 .split-heading {
@@ -768,6 +857,7 @@ textarea {
   letter-spacing: 0.03em;
   line-height: 1.05;
   text-decoration: none;
+  text-transform: none;
   cursor: pointer;
 }
 
@@ -790,8 +880,8 @@ textarea {
   display: block;
   margin-top: 0.18rem;
   color: var(--muted);
-  font-size: 0.72rem;
-  line-height: 1.16;
+  font-size: var(--text-label);
+  line-height: 1.2;
 }
 
 .social-links {
@@ -985,14 +1075,14 @@ textarea {
 .policy-header .wordmark {
   font-family: var(--wordmark);
   font-size: 0.86rem;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: 0.18em;
   line-height: 1;
   text-decoration: none;
 }
 
 .policy-header .wordmark strong {
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .policy-header .text-link {
@@ -1080,21 +1170,10 @@ dialog::backdrop {
   backdrop-filter: blur(6px);
 }
 
-.dialog-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: grid;
-  width: 2.5rem;
-  height: 2.5rem;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-
+/* The QR sits on an ivory mat and every control stays off it: a close mark on
+   the code covered the top-right finder square, which is the part a scanner
+   needs most. The dismiss line sits below the panel on the backdrop, and since
+   app.js also closes on a backdrop click it doubles as the instruction. */
 .qr-dialog {
   width: fit-content;
   max-width: min(90vw, 24rem);
@@ -1105,11 +1184,44 @@ dialog::backdrop {
   text-align: center;
 }
 
+/* Gate the layout on [open]. A bare `display` on a dialog comes from the author
+   origin and so beats the UA's `dialog:not([open]){display:none}` regardless of
+   specificity, which leaves the dialog rendered in the page flow and, because
+   closeQr() bails when .open is false, impossible to dismiss. */
+.qr-dialog[open] {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+}
+
+.qr-dialog:focus {
+  outline: 0;
+}
+
+.qr-panel {
+  padding: 1.1rem;
+  background: var(--ivory);
+  box-shadow: var(--shadow);
+}
+
 .qr-image {
   display: block;
   width: min(100%, 18rem);
   margin: 0 auto;
   background: white;
+}
+
+.qr-dismiss {
+  min-height: 44px;
+  padding: 0 0.5rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 250, 244, 0.72);
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .toast {
@@ -1249,10 +1361,13 @@ dialog::backdrop {
     text-align: right;
   }
 
+  /* Option C: a warm wash in the palette brown rather than the near-black
+     scrim. The photograph keeps its own colour — no brightness filter — and
+     the wash alone gives the light wordmark a calm field to sit on. */
   .entry {
     display: block;
     color: #fffaf4;
-    background: #322d31;
+    background: #5a4f44;
   }
 
   .entry-art {
@@ -1262,13 +1377,11 @@ dialog::backdrop {
 
   .entry-art::before {
     z-index: 1;
-    background:
-      linear-gradient(90deg, rgba(31, 25, 27, 0.38), rgba(31, 25, 27, 0.02) 55%),
-      linear-gradient(0deg, rgba(31, 25, 27, 0.26), transparent 45%);
+    background: linear-gradient(0deg, rgba(90, 79, 68, 0.86), rgba(111, 98, 84, 0.66));
   }
 
   .entry-photo {
-    filter: saturate(0.72) contrast(1.02) brightness(0.84);
+    filter: saturate(0.72) contrast(1.02);
   }
 
   .entry-content {
@@ -1308,19 +1421,6 @@ dialog::backdrop {
     line-height: 1.45;
   }
 
-  .entry .button {
-    min-height: auto;
-    padding: 0.2rem 0;
-    border: 0;
-    border-bottom: 1px solid currentColor;
-    border-radius: 0;
-    color: inherit;
-    background: transparent;
-    font-family: var(--serif);
-    font-size: 0.75rem;
-    font-weight: 400;
-  }
-
   .site-header {
     position: fixed;
     z-index: 30;
@@ -1342,14 +1442,8 @@ dialog::backdrop {
 
   .wordmark {
     gap: 0.6rem;
-    font-family: var(--serif);
-    font-size: 0.66rem;
+    font-size: var(--text-body);
     letter-spacing: 0.14em;
-  }
-
-  .logo-space {
-    width: 1.25rem;
-    height: 1.25rem;
   }
 
   .site-nav {
@@ -1414,20 +1508,10 @@ dialog::backdrop {
   }
 
   .filter {
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    color: var(--muted);
-    background: transparent;
-    font-family: var(--serif);
     font-size: 0.72rem;
-    text-decoration: none;
   }
 
   .filter.is-active {
-    color: var(--ink);
-    background: transparent;
-    text-decoration: underline;
     text-underline-offset: 0.25em;
   }
 
@@ -1478,10 +1562,6 @@ dialog::backdrop {
     background: var(--canvas);
   }
 
-  .button {
-    border-radius: 0;
-  }
-
   .contact-layout {
     gap: 6rem;
   }
@@ -1512,6 +1592,26 @@ dialog::backdrop {
   .process-grid article::before {
     display: none;
   }
+
+  /* Below 1050px the two-column piece no longer has room for both tracks: the
+     meta column's 16rem minimum starves the photograph, which fell to 83px
+     wide at 781px and stayed narrower than its own caption up to ~1280px. The
+     photograph leads a portfolio, so it takes the full column here and the
+     meta sits under it, still in the desktop presentation. The ceiling matches
+     the widest the photo ever reaches on desktop, so it never overshoots. */
+  .piece-layout,
+  .piece-layout-available {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-24);
+  }
+
+  .piece-layout-available .piece-media {
+    max-width: 34rem;
+  }
+
+  .piece-layout-available .piece-meta {
+    max-width: 34rem;
+  }
 }
 
 /* Mobile. The grid gets coarser (12 -> 6 columns) rather than being abandoned,
@@ -1521,7 +1621,7 @@ dialog::backdrop {
     --columns: 6;
     --inset: 1.25rem;
     --gutter: 0.75rem;
-    --header-height: 6.35rem;
+    --header-height: 4rem;
     --space-24: 1.25rem;
     --space-32: 1.5rem;
     --space-40: 1.75rem;
@@ -1552,15 +1652,25 @@ dialog::backdrop {
       max(0.75rem, env(safe-area-inset-right))
       0.35rem
       max(0.75rem, env(safe-area-inset-left));
-    font-size: 0.66rem;
-    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--text-label);
+    letter-spacing: 0.1em;
   }
 
+  /* The banner is in normal flow here (it is position:fixed above 781px), so
+     the entry subtracts it to stay exactly one viewport tall. Both rows are
+     flexible so the photograph keeps a fixed share instead of absorbing every
+     spare pixel: with an `auto` copy row it grew to 62% of a tall phone and
+     70% at 768px. The copy row's `max-content` minimum is what stops the CTA
+     being clipped at 320x568, where the eyebrow, wordmark, statement and
+     button need more than the ratio would otherwise give them. `auto` is not
+     enough there: it resolves below the copy's real height and the button
+     overflows. */
   .entry {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 58%) minmax(0, 42%);
-    min-height: calc(var(--1vh) * 100);
-    height: calc(var(--1vh) * 100);
+    grid-template-rows: minmax(0, 1.2fr) minmax(max-content, 1fr);
+    min-height: calc(var(--1vh) * 100 - var(--banner-height-actual));
+    height: calc(var(--1vh) * 100 - var(--banner-height-actual));
   }
 
   .entry-art {
@@ -1602,9 +1712,17 @@ dialog::backdrop {
     overflow-wrap: anywhere;
   }
 
-  .entry .button {
-    min-height: 44px;
-    padding-inline: 1.1rem;
+  /* The rule sits 0.2rem under the word, so the box itself is around 30px.
+     Extend the touch target to 44px with a transparent overlay rather than
+     padding, which would push the rule away from the word. */
+  .entry .button::before {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 44px;
+    content: "";
+    transform: translateY(-50%);
   }
 
   .entry-index,
@@ -1612,12 +1730,16 @@ dialog::backdrop {
     display: none;
   }
 
-  /* No toggle and no panel. The nav sits out in the open as a single row of
-     links floating on a translucent wash, so content scrolls under it. */
+  /* One row: wordmark left, Menu disclosure right. The three section names
+     total 302px against 260-330px of usable width, so they cannot share the
+     row with the wordmark at any phone size. They move into a panel that
+     drops from the header instead, and content still scrolls under the
+     translucent wash. */
   .site-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
     min-height: var(--header-height);
     padding:
       max(0.7rem, env(safe-area-inset-top))
@@ -1630,44 +1752,74 @@ dialog::backdrop {
     -webkit-backdrop-filter: blur(16px) saturate(1.1);
   }
 
+  .nav-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
   .wordmark {
     max-width: 100%;
+    min-width: 0;
     font-size: var(--text-body);
   }
 
-  .logo-space {
-    flex: 0 0 auto;
-  }
 
-
+  /* The panel is closed by default and toggled by app.js. Without the
+     [hidden] rule the display below would override the attribute and the
+     panel could never close. Opaque rather than washed: navigation should
+     not have portfolio copy showing through it. */
   .site-nav {
-    position: static;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
     display: flex;
-    flex-flow: row wrap;
-    align-items: baseline;
-    gap: 0 1.25rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
+    flex-flow: column nowrap;
+    gap: 0;
+    padding:
+      0.25rem
+      max(var(--inset), env(safe-area-inset-right))
+      0.75rem
+      max(var(--inset), env(safe-area-inset-left));
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--canvas);
+    box-shadow: var(--shadow);
   }
 
-  /* The numeral is rail furniture. In a floating row only the short section
-     name earns its space, so the descriptor is clipped rather than removed:
+  .site-nav[hidden] {
+    display: none;
+  }
+
+  /* The numeral is rail furniture on desktop, where it is absolutely
+     positioned in the gutter. The panel is a plain vertical list, so it
+     returns to the flow as the row's index. The descriptor is still clipped:
      the anchor keeps its accessible name and is stretched over the whole
      group to stay a 44px target. */
   .nav-number {
-    display: none;
+    position: static;
+    display: inline;
+    color: var(--muted);
+    font-size: 0.62rem;
   }
 
   .nav-group {
     position: relative;
-    display: inline-flex;
-    align-items: center;
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
     min-width: 44px;
     min-height: 44px;
     padding: 0;
     border: 0;
+  }
+
+  .nav-group + .nav-group {
+    border-top: 1px solid var(--line);
   }
 
   .nav-group strong {
@@ -1701,6 +1853,29 @@ dialog::backdrop {
     gap: var(--space-32);
   }
 
+  /* The contact actions are editorial text links by design: the base rule
+     strips their padding so they read as words with a trailing arrow, not as
+     chips. That leaves a 17px box on the two primary phone CTAs and on the
+     form submit, under the 24px WCAG 2.5.8 floor and well under the 44px
+     platform guideline. Widen the hit area with a transparent band, the same
+     trick as .entry .button, so the typography is untouched. The band is
+     centred, so it overhangs the 0.7rem block padding by under a pixel. */
+  .contact-channels .contact-action-link,
+  .contact-form .button {
+    position: relative;
+  }
+
+  .contact-channels .contact-action-link::before,
+  .contact-form .button::before {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 44px;
+    content: "";
+    transform: translateY(-50%);
+  }
+
   .section-heading h2,
   .split-heading h2 {
     font-size: var(--display-lg);
@@ -1708,11 +1883,13 @@ dialog::backdrop {
   }
 
   .section {
+    --section-pad-left: max(var(--inset), env(safe-area-inset-left));
+    --section-pad-right: max(var(--inset), env(safe-area-inset-right));
     padding:
       var(--space-top)
-      max(var(--inset), env(safe-area-inset-right))
+      var(--section-pad-right)
       var(--space-top)
-      max(var(--inset), env(safe-area-inset-left));
+      var(--section-pad-left);
     scroll-margin-top: var(--header-height-actual);
   }
 
@@ -1722,18 +1899,10 @@ dialog::backdrop {
   }
 
   .filter-group {
-    gap: 0.35rem 1rem;
-    overflow-x: auto;
     padding-bottom: 0.5rem;
-    scrollbar-width: none;
-  }
-
-  .filter-group::-webkit-scrollbar {
-    display: none;
   }
 
   .filter {
-    flex: 0 0 auto;
     min-height: 44px;
   }
 
@@ -1746,7 +1915,6 @@ dialog::backdrop {
     aspect-ratio: var(--card-ratio, 4 / 5);
   }
 
-  .button,
   input,
   select,
   textarea {
@@ -1777,11 +1945,15 @@ dialog::backdrop {
   .piece-layout,
   .piece-layout-available {
     grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-16);
   }
 
-  .piece-layout,
-  .piece-layout-available {
-    gap: var(--space-16);
+  /* max-width: none undoes the 34rem ceiling set at <=1050px, which would
+     otherwise clamp the full-bleed on wider phones. */
+  .piece-layout-available .piece-media {
+    max-width: none;
+    width: calc(100% + var(--section-pad-left) + var(--section-pad-right));
+    margin-left: calc(-1 * var(--section-pad-left));
   }
 
   .piece-media,
@@ -1789,13 +1961,91 @@ dialog::backdrop {
     min-width: 0;
   }
 
-  .piece-fitting-note,
-  .contact-payment-note {
-    white-space: normal;
+  .piece-layout-available .piece-meta {
+    max-width: none;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0;
+    border-bottom: 0;
   }
 
+  .piece-kicker {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .piece-meta .status {
+    grid-row: auto;
+  }
+
+  /* One line on mobile. --display-lg is the ceiling; app.js applies the nowrap,
+     measures each title and publishes --title-scale to pull the size down only
+     as far as the card needs, so a short name stays large and a long one still
+     fits. Letter-spacing is in em, so the lockup scales linearly and one pass is
+     exact. Without JS the title simply wraps as before. */
+  .piece-layout-available .piece-meta > strong {
+    padding: var(--space-32) 0;
+    font-size: calc(var(--display-lg) * var(--title-scale, 1));
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  .piece-details {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .piece-details > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    cursor: pointer;
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    list-style: none;
+    text-transform: uppercase;
+  }
+
+  .piece-details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .piece-details > summary::after {
+    content: "+";
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  .piece-details[open] > summary::after {
+    content: "−";
+  }
+
+  .piece-details .piece-technique-list {
+    margin: 0;
+    padding: 0.25rem 0 1rem;
+  }
+
+  .piece-layout-available .piece-inquiry {
+    margin-top: var(--space-24);
+  }
+
+  /* The note closes the contact section. On one column it follows the form
+     directly, so it sits close enough to read as that block's fine print
+     rather than drifting toward the footer. */
   .contact-payment-note {
+    margin-top: var(--space-16);
     text-align: left;
+    white-space: normal;
   }
 
   /* Keep the editorial stagger on mobile instead of flattening every piece to
@@ -1829,17 +2079,6 @@ dialog::backdrop {
 
 }
 
-
-
-/* At or below 361px the three section names no longer fit one line and the
-   nav wraps to a second row. That is the intended graceful outcome; reserve
-   the taller height so the header does not jump once the webfont swaps in.
-   Anchor offsets are corrected at runtime via --header-height-actual. */
-@media (max-width: 361px) {
-  :root {
-    --header-height: 8.8rem;
-  }
-}
 
 
 @media (max-width: 780px) and (orientation: landscape) {
@@ -1893,6 +2132,10 @@ dialog::backdrop {
   .site-footer a:hover {
     text-decoration: underline;
     text-underline-offset: 0.18em;
+  }
+
+  .qr-dismiss:hover {
+    color: var(--ivory);
   }
 
   .entry-index a:hover::after {

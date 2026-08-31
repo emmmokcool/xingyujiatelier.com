@@ -44,6 +44,7 @@ document.querySelectorAll("[data-gallery-filter]").forEach((button) => {
     const filter = button.dataset.galleryFilter;
     document.querySelectorAll("[data-gallery-filter]").forEach((item) => {
       item.classList.toggle("is-active", item === button);
+      item.setAttribute("aria-pressed", String(item === button));
     });
 
     document.querySelectorAll(".gallery-card").forEach((card) => {
@@ -54,20 +55,32 @@ document.querySelectorAll("[data-gallery-filter]").forEach((button) => {
 
 document.querySelectorAll(".piece-image-control").forEach((control) => {
   control.addEventListener("click", () => {
-    const media = control.closest(".piece-layout").querySelector(".piece-media");
+    const layout = control.closest(".piece-layout");
+    const media = layout.querySelector(".piece-media");
     const mainImage = media.querySelector(".piece-art img");
-    const caption = media.querySelector(".piece-photo-id");
 
     mainImage.src = control.dataset.image;
     mainImage.removeAttribute("srcset");
     mainImage.alt = control.dataset.alt;
-    caption.textContent = `Photo ID · ${control.dataset.photoId}`;
 
     control.closest(".piece-dot-nav").querySelectorAll(".piece-image-control").forEach((item) => {
       item.classList.toggle("is-active", item === control);
+      item.setAttribute("aria-pressed", String(item === control));
     });
   });
 });
+
+const pieceDetails = document.querySelectorAll("[data-piece-details]");
+const pieceDetailsCollapse = window.matchMedia("(max-width: 780px)");
+
+function syncPieceDetails() {
+  pieceDetails.forEach((details) => {
+    details.open = !pieceDetailsCollapse.matches;
+  });
+}
+
+syncPieceDetails();
+pieceDetailsCollapse.addEventListener("change", syncPieceDetails);
 
 document.querySelectorAll("[data-image-previous], [data-image-next]").forEach((arrow) => {
   arrow.addEventListener("click", () => {
@@ -185,6 +198,10 @@ function openQr(dialog, trigger) {
 
   if (typeof dialog.showModal === "function") {
     dialog.showModal();
+    /* Without this the browser focuses the dismiss line, which then wears a
+       focus ring the moment the code appears. Focusing the dialog keeps the
+       panel clean while Escape, Tab and the accessible name still work. */
+    dialog.focus();
     return;
   }
 
@@ -192,11 +209,13 @@ function openQr(dialog, trigger) {
   if (image) window.open(image.getAttribute("src"), "_blank", "noopener");
 }
 
+/* The browser returns focus to whatever was focused before showModal(), which
+   for a real click or keypress is the trigger itself, so no manual restore is
+   needed — an explicit focus() call here only races the browser's own. */
 function closeQr(dialog) {
   if (!dialog?.open) return;
 
   dialog.close();
-  qrTrigger?.focus();
 }
 
 document.querySelectorAll(".qr-dialog").forEach((dialog) => {
@@ -216,22 +235,115 @@ function showToast(message) {
   showToast.timeout = setTimeout(() => toast.classList.remove("is-visible"), 3500);
 }
 
-/* The mobile header wraps to a second row on narrow screens, and the webfont
-   swapping in can change its height after first paint. Publish the measured
-   height so anchored scrolling always clears the header. */
-const siteHeader = document.querySelector(".site-header");
+/* The mobile header collapses to a single row, and the webfont swapping in
+   can change its height after first paint. Publish the measured height so
+   anchored scrolling always clears the header. The banner is published the
+   same way: it sits in normal flow above the entry screen, so the entry has
+   to subtract it to stay exactly one viewport tall. */
+function publishMeasuredHeight(element, property) {
+  if (!element) return;
 
-if (siteHeader) {
-  const publishHeaderHeight = () => {
-    const height = Math.round(siteHeader.getBoundingClientRect().height);
+  const publish = () => {
+    const height = Math.round(element.getBoundingClientRect().height);
 
     if (height > 0) {
-      document.documentElement.style.setProperty("--header-height-actual", `${height}px`);
+      document.documentElement.style.setProperty(property, `${height}px`);
     } else {
-      document.documentElement.style.removeProperty("--header-height-actual");
+      document.documentElement.style.removeProperty(property);
     }
   };
 
-  publishHeaderHeight();
-  new ResizeObserver(publishHeaderHeight).observe(siteHeader);
+  publish();
+  new ResizeObserver(publish).observe(element);
+}
+
+publishMeasuredHeight(document.querySelector(".site-header"), "--header-height-actual");
+publishMeasuredHeight(document.querySelector(".prototype-banner"), "--banner-height-actual");
+
+/* Below 781px the piece title is the card's display line and must not wrap.
+   Measure its natural single-line width against the space available and
+   publish a scale, so each title is set as large as it can be while still
+   fitting. Above 780px the title sits in the meta column and wraps normally,
+   so the scale is cleared. */
+const pieceTitles = document.querySelectorAll(".piece-layout-available .piece-meta > strong");
+const titleCollapses = window.matchMedia("(max-width: 780px)");
+
+function fitPieceTitles() {
+  pieceTitles.forEach((title) => {
+    title.style.removeProperty("--title-scale");
+    title.style.removeProperty("white-space");
+
+    if (!titleCollapses.matches) return;
+
+    title.style.whiteSpace = "nowrap";
+
+    const available = title.clientWidth;
+    const natural = title.scrollWidth;
+
+    if (!available || !natural || natural <= available) return;
+
+    title.style.setProperty("--title-scale", (available / natural).toFixed(4));
+  });
+}
+
+fitPieceTitles();
+titleCollapses.addEventListener("change", fitPieceTitles);
+
+let titleFitFrame = 0;
+window.addEventListener("resize", () => {
+  cancelAnimationFrame(titleFitFrame);
+  titleFitFrame = requestAnimationFrame(fitPieceTitles);
+});
+
+/* The webfont swaps in after first paint and changes the measured width. */
+document.fonts?.ready.then(fitPieceTitles);
+
+/* Below 781px the three section names cannot share a row with the wordmark,
+   so they live in a panel behind this toggle. At or above 781px the desktop
+   rail shows them all and the nav must never be left hidden. */
+const navToggle = document.querySelector("#nav-toggle");
+const siteNav = document.querySelector("#site-nav");
+const navCollapses = window.matchMedia("(max-width: 780px)");
+
+function setNavOpen(open) {
+  if (!navToggle || !siteNav) return;
+
+  siteNav.hidden = !open;
+  navToggle.setAttribute("aria-expanded", String(open));
+}
+
+function syncNav() {
+  if (!siteNav) return;
+
+  if (navCollapses.matches) {
+    setNavOpen(false);
+  } else {
+    siteNav.hidden = false;
+    navToggle?.setAttribute("aria-expanded", "false");
+  }
+}
+
+if (navToggle && siteNav) {
+  syncNav();
+  navCollapses.addEventListener("change", syncNav);
+
+  navToggle.addEventListener("click", () => setNavOpen(siteNav.hidden));
+
+  siteNav.addEventListener("click", (event) => {
+    if (navCollapses.matches && event.target.closest("a")) setNavOpen(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !navCollapses.matches || siteNav.hidden) return;
+
+    setNavOpen(false);
+    navToggle.focus();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!navCollapses.matches || siteNav.hidden) return;
+    if (event.target.closest(".site-header")) return;
+
+    setNavOpen(false);
+  });
 }

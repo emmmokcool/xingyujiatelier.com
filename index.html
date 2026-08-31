@@ -90,6 +90,8 @@
       <span>XINGYUJI ATELIER</span>
     </a>
 
+    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+
     <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
       <div class="nav-group">
         <span class="nav-number">I.</span>
@@ -117,10 +119,10 @@
         <p>A portfolio of one-of-a-kind Qipao, including available ready-to-wear pieces and archived work. Waist adjustment may be available for select ready-to-wear Qipao.</p>
       </div>
 
-      <div class="filter-group" aria-label="Filter Portfolio pieces">
-        <button class="filter is-active" type="button" data-gallery-filter="all">All</button>
-        <button class="filter" type="button" data-gallery-filter="available">Available</button>
-        <button class="filter" type="button" data-gallery-filter="unavailable">Unavailable</button>
+      <div class="filter-group" role="group" aria-label="Filter Portfolio pieces">
+        <button class="filter is-active" type="button" data-gallery-filter="all" aria-pressed="true">All</button>
+        <button class="filter" type="button" data-gallery-filter="available" aria-pressed="false">Available</button>
+        <button class="filter" type="button" data-gallery-filter="unavailable" aria-pressed="false">Unavailable</button>
       </div>
 
       <div class="gallery-grid">
@@ -134,36 +136,40 @@
               <img src="assets/web/imported/WEB-17QTUUPZ-IMG_2395-960.jpg"
                 srcset="assets/web/imported/WEB-17QTUUPZ-IMG_2395-960.jpg 960w"
                 sizes="(max-width: 780px) 100vw, 50vw" width="960" height="1440"
-                alt="Light floral Qipao on a dress form" loading="lazy" decoding="async">
-              <span class="piece-photo-id">Photo ID · WEB-17QTUUPZ</span>
+                alt="Shimmering Rippling Aqua Qipao full view" loading="lazy" decoding="async">
               <span class="piece-image-controls">
                 <button class="piece-image-arrow" type="button" data-image-previous aria-label="Previous photo">←</button>
-                <span class="piece-dot-nav" aria-label="More views of Shimmering Rippling Aqua Qipao">
-                  <button class="piece-image-control is-active" type="button" data-image="assets/web/imported/WEB-17QTUUPZ-IMG_2395-960.jpg" data-alt="Shimmering Rippling Aqua Qipao full view" data-photo-id="WEB-17QTUUPZ" aria-label="Full view"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1W958MOK-IMG_2396-960.jpg" data-alt="Shimmering Rippling Aqua Qipao profile view" data-photo-id="WEB-1W958MOK" aria-label="Profile view"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1EZ0QDLF-IMG_2397-960.jpg" data-alt="Shimmering Rippling Aqua Qipao construction detail" data-photo-id="WEB-1EZ0QDLF" aria-label="Construction detail"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1S27E9NG-IMG_2399-960.jpg" data-alt="Shimmering Rippling Aqua Qipao material study" data-photo-id="WEB-1S27E9NG" aria-label="Material study"></button>
+                <span class="piece-dot-nav" role="group" aria-label="More views of Shimmering Rippling Aqua Qipao">
+                  <button class="piece-image-control is-active" type="button" data-image="assets/web/imported/WEB-17QTUUPZ-IMG_2395-960.jpg" data-alt="Shimmering Rippling Aqua Qipao full view" aria-label="Full view" aria-pressed="true"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1W958MOK-IMG_2396-960.jpg" data-alt="Shimmering Rippling Aqua Qipao profile view" aria-label="Profile view" aria-pressed="false"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1EZ0QDLF-IMG_2397-960.jpg" data-alt="Shimmering Rippling Aqua Qipao construction detail" aria-label="Construction detail" aria-pressed="false"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1S27E9NG-IMG_2399-960.jpg" data-alt="Shimmering Rippling Aqua Qipao material study" aria-label="Material study" aria-pressed="false"></button>
                 </span>
                 <button class="piece-image-arrow" type="button" data-image-next aria-label="Next photo">→</button>
               </span>
             </span>
             </div>
-            <span class="piece-meta">
-              <span class="status">Ready-to-wear</span>
+            <div class="piece-meta">
+              <div class="piece-kicker">
+                <span class="status">Ready-to-wear</span>
+              </div>
               <strong>Shimmering Rippling Aqua Qipao</strong>
-              <ul class="piece-technique-list">
-                <li>Collar-less, sleeve-less</li>
-                <li>Column silhouette</li>
-                <li>2 single-bar frogs</li>
-                <li>Concealed zip closure</li>
-                <li>Self-fabric bound edge</li>
-                <li>Hand-stitched slip-stitch</li>
-              </ul>
+              <details class="piece-details" data-piece-details open>
+                <summary>Details</summary>
+                <ul class="piece-technique-list">
+                  <li>Collar-less, sleeve-less</li>
+                  <li>Column silhouette</li>
+                  <li>2 single-bar frogs</li>
+                  <li>Concealed zip closure</li>
+                  <li>Self-fabric bound edge</li>
+                  <li>Hand-stitched slip-stitch</li>
+                </ul>
+              </details>
               <span class="piece-inquiry">
                 <span class="piece-fitting-note">Waist adjustment may be available when construction allows.</span>
                 <a class="button piece-contact-link" href="#contact">Contact about this piece</a>
               </span>
-            </span>
+            </div>
           </div>
         </article>
 
@@ -174,36 +180,40 @@
               <img src="assets/web/imported/WEB-1ZMTDCJV-IMG_2595-960.jpg"
                 srcset="assets/web/imported/WEB-1ZMTDCJV-IMG_2595-960.jpg 960w"
                 sizes="(max-width: 780px) 100vw, 50vw" width="960" height="1440"
-                alt="Silver patterned Qipao detail on a dress form" loading="lazy" decoding="async">
-              <span class="piece-photo-id">Photo ID · WEB-1ZMTDCJV</span>
+                alt="Powder Lavender and White Qipao full view" loading="lazy" decoding="async">
               <span class="piece-image-controls">
                 <button class="piece-image-arrow" type="button" data-image-previous aria-label="Previous photo">←</button>
-                <span class="piece-dot-nav" aria-label="More views of Powder Lavender and White Qipao">
-                  <button class="piece-image-control is-active" type="button" data-image="assets/web/imported/WEB-1ZMTDCJV-IMG_2595-960.jpg" data-alt="Powder Lavender and White Qipao full view" data-photo-id="WEB-1ZMTDCJV" aria-label="Full view"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1WJ7PQJ3-IMG_2597-960.jpg" data-alt="Powder Lavender and White Qipao profile view" data-photo-id="WEB-1WJ7PQJ3" aria-label="Profile view"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1TCG8V3X-IMG_2599-960.jpg" data-alt="Powder Lavender and White Qipao construction detail" data-photo-id="WEB-1TCG8V3X" aria-label="Construction detail"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1GWDEGMJ-IMG_2601-960.jpg" data-alt="Powder Lavender and White Qipao material study" data-photo-id="WEB-1GWDEGMJ" aria-label="Material study"></button>
+                <span class="piece-dot-nav" role="group" aria-label="More views of Powder Lavender and White Qipao">
+                  <button class="piece-image-control is-active" type="button" data-image="assets/web/imported/WEB-1ZMTDCJV-IMG_2595-960.jpg" data-alt="Powder Lavender and White Qipao full view" aria-label="Full view" aria-pressed="true"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1WJ7PQJ3-IMG_2597-960.jpg" data-alt="Powder Lavender and White Qipao profile view" aria-label="Profile view" aria-pressed="false"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1TCG8V3X-IMG_2599-960.jpg" data-alt="Powder Lavender and White Qipao construction detail" aria-label="Construction detail" aria-pressed="false"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-1GWDEGMJ-IMG_2601-960.jpg" data-alt="Powder Lavender and White Qipao material study" aria-label="Material study" aria-pressed="false"></button>
                 </span>
                 <button class="piece-image-arrow" type="button" data-image-next aria-label="Next photo">→</button>
               </span>
             </span>
             </div>
-            <span class="piece-meta">
-              <span class="status">Ready-to-wear</span>
+            <div class="piece-meta">
+              <div class="piece-kicker">
+                <span class="status">Ready-to-wear</span>
+              </div>
               <strong>Powder Lavender and White Qipao</strong>
-              <ul class="piece-technique-list">
-                <li>Diagonal-striped batik</li>
-                <li>Tube-shaped mandarin collar</li>
-                <li>Shoulder-opening</li>
-                <li>Plum blossom motif</li>
-                <li>Self-fabric bound edge</li>
-                <li>Hand-stitched slip-stitch</li>
-              </ul>
+              <details class="piece-details" data-piece-details open>
+                <summary>Details</summary>
+                <ul class="piece-technique-list">
+                  <li>Diagonal-striped batik</li>
+                  <li>Tube-shaped mandarin collar</li>
+                  <li>Shoulder-opening</li>
+                  <li>Plum blossom motif</li>
+                  <li>Self-fabric bound edge</li>
+                  <li>Hand-stitched slip-stitch</li>
+                </ul>
+              </details>
               <span class="piece-inquiry">
                 <span class="piece-fitting-note">Waist adjustment may be available when construction allows.</span>
                 <a class="button piece-contact-link" href="#contact">Contact about this piece</a>
               </span>
-            </span>
+            </div>
           </div>
         </article>
 
@@ -214,32 +224,36 @@
               <img src="assets/web/imported/WEB-GP5LI8LI-IMG_2260-960.jpg"
                 srcset="assets/web/imported/WEB-GP5LI8LI-IMG_2260-960.jpg 960w"
                 sizes="(max-width: 780px) 100vw, 50vw" width="960" height="1440"
-                alt="Tiny purple spring blossom Qipao full view" loading="lazy" decoding="async">
-              <span class="piece-photo-id">Photo ID · WEB-GP5LI8LI</span>
+                alt="Tiny Purple Spring Blossom Qipao full view" loading="lazy" decoding="async">
               <span class="piece-image-controls">
                 <button class="piece-image-arrow" type="button" data-image-previous aria-label="Previous photo">←</button>
-                <span class="piece-dot-nav" aria-label="More views of Tiny purple spring blossom">
-                  <button class="piece-image-control is-active" type="button" data-image="assets/web/imported/WEB-GP5LI8LI-IMG_2260-960.jpg" data-alt="Tiny purple spring blossom Qipao full view" data-photo-id="WEB-GP5LI8LI" aria-label="Full view"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-CKF9MUKI-IMG_2261-960.jpg" data-alt="Tiny purple spring blossom Qipao profile view" data-photo-id="WEB-CKF9MUKI" aria-label="Profile view"></button>
-                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-O2KZNOH7-IMG_2263-960.jpg" data-alt="Tiny purple spring blossom Qipao construction detail" data-photo-id="WEB-O2KZNOH7" aria-label="Construction detail"></button>
+                <span class="piece-dot-nav" role="group" aria-label="More views of Tiny Purple Spring Blossom Qipao">
+                  <button class="piece-image-control is-active" type="button" data-image="assets/web/imported/WEB-GP5LI8LI-IMG_2260-960.jpg" data-alt="Tiny Purple Spring Blossom Qipao full view" aria-label="Full view" aria-pressed="true"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-CKF9MUKI-IMG_2261-960.jpg" data-alt="Tiny Purple Spring Blossom Qipao profile view" aria-label="Profile view" aria-pressed="false"></button>
+                  <button class="piece-image-control" type="button" data-image="assets/web/imported/WEB-O2KZNOH7-IMG_2263-960.jpg" data-alt="Tiny Purple Spring Blossom Qipao construction detail" aria-label="Construction detail" aria-pressed="false"></button>
                 </span>
                 <button class="piece-image-arrow" type="button" data-image-next aria-label="Next photo">→</button>
               </span>
             </span>
             </div>
-            <span class="piece-meta">
-              <span class="status">Ready-to-wear</span>
-              <strong>Tiny purple spring blossom</strong>
-              <ul class="piece-technique-list">
-                <li>Bicolor/double rope piping</li>
-                <li>Concealed zip closure</li>
-                <li>Rhythmic dense and sparse cluster of florals</li>
-              </ul>
+            <div class="piece-meta">
+              <div class="piece-kicker">
+                <span class="status">Ready-to-wear</span>
+              </div>
+              <strong>Tiny Purple Spring Blossom Qipao</strong>
+              <details class="piece-details" data-piece-details open>
+                <summary>Details</summary>
+                <ul class="piece-technique-list">
+                  <li>Bicolor/double rope piping</li>
+                  <li>Concealed zip closure</li>
+                  <li>Rhythmic dense and sparse cluster of florals</li>
+                </ul>
+              </details>
               <span class="piece-inquiry">
                 <span class="piece-fitting-note">Waist adjustment may be available when construction allows.</span>
                 <a class="button piece-contact-link" href="#contact">Contact about this piece</a>
               </span>
-            </span>
+            </div>
           </div>
         </article>
 
@@ -360,7 +374,7 @@
             Every other icon stays hidden and non-clickable until a URL is
             supplied, so no dead link or 404 can ever ship.
           -->
-          <div class="social-links" aria-label="Social links" hidden>
+          <div class="social-links" role="group" aria-label="Social links" hidden>
             <a class="social-icon" data-social="wechat" data-qr="wechat-qr-dialog" data-qr-label="WeChat" aria-label="WeChat" hidden>
               <img src="assets/icons/wechat.svg" alt="" aria-hidden="true">
             </a>
@@ -381,10 +395,10 @@
 
         <form class="contact-form" id="contact-form">
           <div class="field-pair">
-            <label><span class="field-label">First name <span class="required-mark" aria-hidden="true">*</span></span><input name="first-name" required></label>
-            <label><span class="field-label">Last name <span class="required-mark" aria-hidden="true">*</span></span><input name="last-name" required></label>
+            <label><span class="field-label">First name <span class="required-mark" aria-hidden="true">*</span></span><input name="first-name" autocomplete="given-name" required></label>
+            <label><span class="field-label">Last name <span class="required-mark" aria-hidden="true">*</span></span><input name="last-name" autocomplete="family-name" required></label>
           </div>
-          <label><span class="field-label">Email <span class="required-mark" aria-hidden="true">*</span></span><input name="email" type="email" required></label>
+          <label><span class="field-label">Email <span class="required-mark" aria-hidden="true">*</span></span><input name="email" type="email" autocomplete="email" required></label>
           <label>
             <span class="field-label">Inquiry type</span>
             <select name="inquiry-type" id="inquiry-type">
@@ -423,14 +437,18 @@
     </nav>
   </footer>
 
-  <dialog class="qr-dialog" id="wechat-qr-dialog" aria-label="WeChat QR code">
-    <button class="dialog-close" type="button" data-close-qr aria-label="Close WeChat QR code">×</button>
-    <img class="qr-image" src="assets/icons/wechat-qr-code.jpg" alt="XINGYUJI ATELIER WeChat QR code">
+  <dialog class="qr-dialog" id="wechat-qr-dialog" tabindex="-1" aria-label="WeChat QR code">
+    <div class="qr-panel">
+      <img class="qr-image" src="assets/icons/wechat-qr-code.jpg" alt="XINGYUJI ATELIER WeChat QR code">
+    </div>
+    <button class="qr-dismiss" type="button" data-close-qr aria-label="Close WeChat QR code">Tap anywhere to close</button>
   </dialog>
 
-  <dialog class="qr-dialog" id="rednote-qr-dialog" aria-label="RedNote QR code">
-    <button class="dialog-close" type="button" data-close-qr aria-label="Close RedNote QR code">×</button>
-    <img class="qr-image" src="assets/icons/rednote-qr-code.jpg" alt="XINGYUJI ATELIER RedNote QR code">
+  <dialog class="qr-dialog" id="rednote-qr-dialog" tabindex="-1" aria-label="RedNote QR code">
+    <div class="qr-panel">
+      <img class="qr-image" src="assets/icons/rednote-qr-code.jpg" alt="XINGYUJI ATELIER RedNote QR code">
+    </div>
+    <button class="qr-dismiss" type="button" data-close-qr aria-label="Close RedNote QR code">Tap anywhere to close</button>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
